@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package ahmedbaig.events.v1;
+
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/ahmedbaig/go-backend-proto/gen/go/ahmedbaig/events/v1;eventsv1";
+
+message Event {
+  string id = 1;
+  string topic = 2;
+  string type = 3;
+  google.protobuf.Struct data = 4;
+  string correlation_id = 5;
+  string request_id = 6;
+  google.protobuf.Timestamp at = 7;
+}

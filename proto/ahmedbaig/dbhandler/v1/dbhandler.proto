@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+package ahmedbaig.dbhandler.v1;
+
+option go_package = "github.com/ahmedbaig/go-backend-proto/gen/go/ahmedbaig/dbhandler/v1;dbhandlerv1";
+
+service DBHandlerService {
+  rpc Query(QueryRequest) returns (QueryResponse);
+  rpc Transaction(TransactionRequest) returns (TransactionResponse);
+  rpc KeyValue(KeyValueRequest) returns (KeyValueResponse);
+  rpc Documents(DocumentsRequest) returns (DocumentsResponse);
+  rpc Track(TrackRequest) returns (TrackResponse);
+  rpc DailyActiveUsers(DailyActiveUsersRequest) returns (DailyActiveUsersResponse);
+  rpc Capabilities(CapabilitiesRequest) returns (CapabilitiesResponse);
+}
+
+message QueryRequest {
+  string database = 1;
+  string instance = 2;
+  string service = 3;
+  string method = 4;
+  bytes params_json = 5;
+}
+
+message QueryResponse {
+  bytes data_json = 1;
+  optional int64 count = 2;
+}
+
+message TransactionRequest {
+  string database = 1;
+  string instance = 2;
+  repeated QueryRequest queries = 3;
+}
+
+message TransactionResponse {
+  repeated QueryResponse results = 1;
+}
+
+message KeyValueRequest {
+  string store = 1;
+  string op = 2;
+  bytes request_json = 3;
+}
+
+message KeyValueResponse {
+  bytes result_json = 1;
+}
+
+message DocumentsRequest {
+  string store = 1;
+  string collection = 2;
+  string op = 3;
+  bytes request_json = 4;
+}
+
+message DocumentsResponse {
+  bytes result_json = 1;
+}
+
+message TrackRequest {
+  string store = 1;
+  bytes events_json = 2;
+}
+
+message TrackResponse {
+  bytes result_json = 1;
+}
+
+message DailyActiveUsersRequest {
+  string store = 1;
+  string from = 2;
+  string to = 3;
+}
+
+message DailyActiveUsersResponse {
+  bytes points_json = 1;
+}
+
+message CapabilitiesRequest {}
+
+message CapabilitiesResponse {
+  bytes capabilities_json = 1;
+}

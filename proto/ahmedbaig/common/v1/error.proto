@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package ahmedbaig.common.v1;
+
+option go_package = "github.com/ahmedbaig/go-backend-proto/gen/go/ahmedbaig/common/v1;commonv1";
+
+message ErrorInfo {
+  string code = 1;
+  string message = 2;
+  repeated string customer_actions = 3;
+  repeated string support_actions = 4;
+  repeated FieldViolation fields = 5;
+  int32 http_status = 6;
+}
+
+message FieldViolation {
+  string field = 1;
+  string rule = 2;
+  string message = 3;
+}
