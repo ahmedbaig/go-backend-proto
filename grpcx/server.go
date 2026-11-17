@@ -128,7 +128,7 @@ func incoming(ctx context.Context, log *slog.Logger) (context.Context, error) {
 	if !safeID.MatchString(cid) {
 		cid = rid
 	}
-	ctx = httpx.WithIDs(ctx, rid, cid)
+	ctx = httpx.WithIDs(logging.WithScope(ctx), rid, cid)
 	ctx = logging.WithAttrs(ctx, slog.String("requestId", rid), slog.String("correlationId", cid))
 	ctx = httpx.WithLogger(ctx, log)
 	if raw := first(md, MDUser); raw != "" {
@@ -137,7 +137,7 @@ func incoming(ctx context.Context, log *slog.Logger) (context.Context, error) {
 			return ctx, status.Error(codes.Unauthenticated, "the user metadata is invalid")
 		}
 		ctx = types.WithUser(ctx, u)
-		ctx = logging.WithAttrs(ctx, slog.Int64("userId", u.ID))
+		ctx = logging.WithAttrs(ctx, slog.Int64("userId", u.ID), slog.String("email", u.Email), slog.Any("roles", u.Roles))
 	}
 	_ = grpc.SetHeader(ctx, metadata.Pairs(MDRequestID, rid, MDCorrelationID, cid))
 	return ctx, nil
